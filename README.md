@@ -1,34 +1,38 @@
-# NMU StudyMate - Academic Portal
+# 🎓 NMU StudyMate - University Learning Portal
+![Banner](./assets/images/banner.png)
 
-![NMU StudyMate Screenshot](./assets/images/screenshot.png)
+A lightweight academic platform for New Mansoura University students and professors to manage courses, materials, and discussions.
 
-A lightweight web platform for New Mansoura University students and professors to share course materials, manage deadlines, and interact within courses.
+## 🌟 Features
+### 👨‍🎓 Students
+- View enrolled courses
+- Download lecture materials (PDFs, Videos)
+- Participate in course discussions
+- Receive deadline notifications
 
-## Features
+### 👨‍🏫 Professors
+- Upload course materials
+- Create/manage deadlines
+- Moderate discussions
+- Track student engagement
 
-- 👨‍🎓 **Student Portal**
-  - View enrolled courses
-  - Download lecture materials
-  - Participate in discussions
-  - Receive deadline notifications
+### ⚙️ Admins
+- Manage user accounts
+- Monitor system activity
+- Generate reports
 
-- 👨‍🏫 **Professor Portal**
-  - Upload course materials (PDFs, slides, videos)
-  - Create/manage course deadlines
-  - Moderate discussions
+## 🖥️ Live Demo
+[![Demo Video](./assets/images/thumbnail.png)](https://youtu.be/demo-link)  
+*Click image to watch 2-minute demo*
 
-- ⚙️ **Admin Panel** (Basic)
-  - Manage user accounts
-  - Monitor system activity
+## 🛠️ Tech Stack
+| Frontend | Backend Simulation | Tools |
+|----------|--------------------|-------|
+| HTML5    | localStorage       | Git   |
+| CSS3     | JSON Server        | Figma |
+| JavaScript | Mock API         | Trello|
 
-## Tech Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Data Storage**: localStorage (or `db.json` with JSON Server)
-- **Optional**: Bootstrap for responsive design
-
-## Getting Started
-
-1. **Clone the repository**:
+## 🚀 Installation
+1. Clone repository:
    ```bash
-   git clone https://github.com/yourusername/nmu-studymate.git
+   git clone https://github.com/marwans111/nmu-studymate.git
