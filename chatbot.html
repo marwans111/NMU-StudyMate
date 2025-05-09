@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMU StudyMate - AI Assistant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: rgb(160, 50, 50);
+      --secondary-color: white;
+      --light-bg: #f9f9f9;
+      --text-color: #333;
+      --chatbot-bg: #fff;
+      --user-bubble: #e6f2ff;
+      --bot-bubble: #f0f0f0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-color);
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      font-size: 1.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--secondary-color);
+      text-decoration: none;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .welcome-message {
+      margin-bottom: 2rem;
+    }
+
+    .welcome-message h1 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .welcome-message p {
+      color: #666;
+    }
+
+    .dashboard-columns {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+    }
+
+    /* Chatbot Container */
+    .chatbot-container {
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      height: calc(100vh - 220px);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(160, 50, 50, 0.1);
+    }
+
+    .chatbot-header {
+      padding: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chatbot-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .chatbot-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      display: flex;
+      max-width: 80%;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.received {
+      align-self: flex-start;
+    }
+
+    .message.sent {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 0.8rem;
+      flex-shrink: 0;
+      background: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .message-avatar img {
+      width: 60%;
+      height: 60%;
+      object-fit: contain;
+    }
+
+    .message-content {
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .message.received .message-content {
+      background: var(--secondary-color);
+      border-top-left-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid rgba(160, 50, 50, 0.1);
+    }
+
+    .message.sent .message-content {
+      background: var(--primary-color);
+      color: white;
+      border-top-right-radius: 4px;
+    }
+
+    .message-time {
+      display: block;
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    .chatbot-input {
+      padding: 1rem;
+      border-top: 1px solid rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      background: var(--secondary-color);
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .chatbot-input input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(160, 50, 50, 0.1);
+    }
+
+    .send-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      margin-left: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .send-btn:hover {
+      background: rgb(140, 40, 40);
+      transform: scale(1.05);
+    }
+
+    /* Quick Actions Sidebar */
+    .quick-actions {
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      height: calc(100vh - 220px);
+      overflow-y: auto;
+    }
+
+    .quick-actions h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-card {
+      background: var(--secondary-color);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--primary-color);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .action-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .action-card h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-card p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Knowledge Cards */
+    .knowledge-card {
+      background: var(--secondary-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 3px solid var(--primary-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .knowledge-card h4 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .knowledge-card p {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .dashboard-columns {
+        grid-template-columns: 1fr;
+      }
+      
+      .quick-actions, .chatbot-container {
+        height: auto;
+        max-height: 400px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <h2>NMU StudyMate - AI Assistant</h2>
+    <div class="nav-links">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('courses') }}">Courses</a>
+      <a href="{{ url_for('schedule') }}">Schedule</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-content">
+    <div class="welcome-message">
+      <h1><i class="fas fa-robot"></i> AI Study Assistant</h1>
+      <p>Get instant help with your coursework and academic questions</p>
+    </div>
+
+    <div class="dashboard-columns">
+      <!-- Quick Actions Sidebar -->
+      <div class="quick-actions">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+        
+        <div class="action-card" data-prompt="Explain database normalization">
+          <h3><i class="fas fa-database"></i> Database Help</h3>
+          <p>Get explanations of database concepts and normalization</p>
+        </div>
+        
+        <div class="action-card" data-prompt="Help with calculus problem">
+          <h3><i class="fas fa-calculator"></i> Math Assistance</h3>
+          <p>Solve calculus problems and understand concepts</p>
+        </div>
+        
+        <div class="action-card" data-prompt="Explain programming concept">
+          <h3><i class="fas fa-code"></i> Programming Help</h3>
+          <p>Get coding assistance and algorithm explanations</p>
+        </div>
+        
+        <div class="action-card" data-prompt="What's on my schedule today?">
+          <h3><i class="fas fa-calendar-day"></i> Today's Schedule</h3>
+          <p>View your classes and events for today</p>
+        </div>
+        
+        <div class="action-card" data-prompt="Show my pending assignments">
+          <h3><i class="fas fa-tasks"></i> My Assignments</h3>
+          <p>Check your upcoming and overdue assignments</p>
+        </div>
+        
+        <div class="action-card" data-prompt="Give me study tips">
+          <h3><i class="fas fa-lightbulb"></i> Study Tips</h3>
+          <p>Learn effective study techniques and strategies</p>
+        </div>
+      </div>
+
+      <!-- Chatbot Interface -->
+      <div class="chatbot-container">
+        <div class="chatbot-header">
+          <div class="chatbot-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3>NMU StudyBot</h3>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbot-messages">
+          <div class="message received">
+            <div class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <p>Hello {{ current_user.name if current_user else 'Student' }}! I'm your NMU StudyBot assistant. How can I help you with your studies today?</p>
+              <p>You can ask me about:</p>
+              <ul>
+                <li>Course concepts and explanations</li>
+                <li>Homework and assignment help</li>
+                <li>Your schedule and academic progress</li>
+                <li>Study techniques and resources</li>
+              </ul>
+              <span class="message-time">Just now</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chatbot-input">
+          <input type="text" placeholder="Ask me anything about your courses..." id="chatbot-input">
+          <button class="send-btn" id="send-btn">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatbotMessages = document.getElementById('chatbot-messages');
+      const chatbotInput = document.getElementById('chatbot-input');
+      const sendButton = document.getElementById('send-btn');
+      const actionCards = document.querySelectorAll('.action-card');
+      
+      // Sample academic data (would come from your backend in a real app)
+      const academicData = {
+        schedule: [
+          { course: "Computer Programming", time: "10:00 AM - 11:30 AM", location: "Room 205", instructor: "Dr. Ahmed Mohamed" },
+          { course: "Advanced Mathematics", time: "02:00 PM - 03:30 PM", location: "Room 312", instructor: "Dr. Mohamed Samy" },
+          { course: "Database Systems", time: "04:00 PM - 05:30 PM", location: "Lab A1", instructor: "Dr. Sara Ali" }
+        ],
+        assignments: [
+          { title: "Programming Project", course: "Computer Programming", due: "Oct 18", status: "2 days left" },
+          { title: "Math Problem Set", course: "Advanced Mathematics", due: "Oct 20", status: "4 days left" },
+          { title: "SQL Lab Report", course: "Database Systems", due: "Oct 22", status: "6 days left" }
+        ],
+        progress: [
+          { course: "Computer Programming", percent: 85 },
+          { course: "Advanced Mathematics", percent: 72 },
+          { course: "Database Systems", percent: 65 }
+        ]
+      };
+      
+      // Knowledge base for academic concepts
+      const knowledgeBase = {
+        "database normalization": {
+          title: "Database Normalization",
+          content: "Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity. The main normal forms are:<br><br>" +
+                   "1. <strong>1NF</strong>: Eliminate repeating groups - each table cell should contain a single value<br>" +
+                   "2. <strong>2NF</strong>: Be in 1NF and remove partial dependencies (all non-key attributes depend on the entire primary key)<br>" +
+                   "3. <strong>3NF</strong>: Be in 2NF and remove transitive dependencies (non-key attributes don't depend on other non-key attributes)<br>" +
+                   "4. <strong>BCNF</strong>: A stronger version of 3NF where every determinant is a candidate key"
+        },
+        "calculus": {
+          title: "Calculus Help",
+          content: "Key calculus concepts include:<br><br>" +
+                   "<strong>Derivatives</strong>: Measure how a function changes as its input changes<br>" +
+                   "<strong>Integrals</strong>: Calculate the area under a curve or the accumulation of quantities<br>" +
+                   "<strong>Limits</strong>: Describe the behavior of functions as they approach specific points<br>" +
+                   "<strong>Applications</strong>: Used in physics, engineering, economics, and many other fields"
+        },
+        "programming": {
+          title: "Programming Help",
+          content: "Common programming concepts I can help with:<br><br>" +
+                   "<strong>Variables & Data Types</strong>: Storing and manipulating data<br>" +
+                   "<strong>Control Structures</strong>: Loops and conditionals to control program flow<br>" +
+                   "<strong>Functions</strong>: Reusable blocks of code<br>" +
+                   "<strong>Object-Oriented Programming</strong>: Classes, objects, inheritance, and polymorphism<br>" +
+                   "<strong>Algorithms</strong>: Problem-solving approaches and efficiency analysis"
+        }
+      };
+      
+      // Study tips
+      const studyTips = [
+        "Use the <strong>Pomodoro Technique</strong>: Study for 25 minutes, then take a 5-minute break",
+        "Practice <strong>active recall</strong>: Test yourself on the material instead of just rereading",
+        "Create <strong>mind maps</strong> to visualize connections between concepts",
+        "Teach the material to someone else to reinforce your understanding",
+        "Space out your study sessions over time (<strong>spaced repetition</strong>) for better retention"
+      ];
+      
+      // Add message to chat
+      function addMessage(text, isUser = false, isSpecial = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'sent' : 'received'}`;
+        
+        if (!isUser) {
+          messageDiv.innerHTML = `
+            <div class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <p>${text.replace(/\n/g, '<br>')}</p>
+              <span class="message-time">${getCurrentTime()}</span>
+            </div>
+          `;
+          
+          if (isSpecial) {
+            const specialContent = generateSpecialContent(text);
+            if (specialContent) {
+              messageDiv.querySelector('.message-content').innerHTML += specialContent;
+            }
+          }
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <p>${text}</p>
+              <span class="message-time">${getCurrentTime()}</span>
+            </div>
+          `;
+        }
+        
+        chatbotMessages.appendChild(messageDiv);
+        scrollToBottom();
+      }
+      
+      // Generate special content based on message
+      function generateSpecialContent(text) {
+        const lowerText = text.toLowerCase();
+        
+        // Schedule response
+        if (lowerText.includes('schedule') || lowerText.includes('today')) {
+          let scheduleHTML = '<div class="knowledge-card"><h4><i class="fas fa-calendar-day"></i> Today\'s Schedule</h4>';
+          
+          academicData.schedule.forEach(item => {
+            scheduleHTML += `
+              <div style="margin-bottom: 1rem;">
+                <p><strong>${item.course}</strong></p>
+                <p><i class="fas fa-clock"></i> ${item.time} | <i class="fas fa-map-marker-alt"></i> ${item.location}</p>
+                <p><i class="fas fa-user-tie"></i> ${item.instructor}</p>
+              </div>
+            `;
+          });
+          
+          scheduleHTML += '</div>';
+          return scheduleHTML;
+        }
+        
+        // Assignments response
+        if (lowerText.includes('assignment') || lowerText.includes('due')) {
+          let assignmentsHTML = '<div class="knowledge-card"><h4><i class="fas fa-tasks"></i> Your Assignments</h4>';
+          
+          academicData.assignments.forEach(item => {
+            assignmentsHTML += `
+              <div style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
+                <p><strong>${item.title}</strong></p>
+                <p><i class="fas fa-book"></i> ${item.course} | Due: ${item.due}</p>
+                <p style="color: ${item.status.includes('overdue') ? 'var(--primary-color)' : '#666'}">
+                  <i class="fas ${item.status.includes('overdue') ? 'fa-exclamation-circle' : 'fa-clock'}"></i> ${item.status}
+                </p>
+              </div>
+            `;
+          });
+          
+          assignmentsHTML += '</div>';
+          return assignmentsHTML;
+        }
+        
+        // Progress response
+        if (lowerText.includes('progress') || lowerText.includes('gpa')) {
+          let progressHTML = '<div class="knowledge-card"><h4><i class="fas fa-chart-line"></i> Your Academic Progress</h4>';
+          
+          academicData.progress.forEach(item => {
+            progressHTML += `
+              <div style="margin-bottom: 1rem;">
+                <p><strong>${item.course}</strong></p>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <div style="flex: 1; height: 8px; background: #eee; border-radius: 4px;">
+                    <div style="height: 100%; width: ${item.percent}%; background: var(--primary-color); border-radius: 4px;"></div>
+                  </div>
+                  <span>${item.percent}%</span>
+                </div>
+              </div>
+            `;
+          });
+          
+          progressHTML += '</div>';
+          return progressHTML;
+        }
+        
+        // Study tips response
+        if (lowerText.includes('study') || lowerText.includes('exam')) {
+          let tipsHTML = '<div class="knowledge-card"><h4><i class="fas fa-lightbulb"></i> Study Tips</h4><ul>';
+          
+          studyTips.forEach(tip => {
+            tipsHTML += `<li>${tip}</li>`;
+          });
+          
+          tipsHTML += '</ul></div>';
+          return tipsHTML;
+        }
+        
+        // Knowledge base response
+        for (const [key, value] of Object.entries(knowledgeBase)) {
+          if (lowerText.includes(key)) {
+            return `
+              <div class="knowledge-card">
+                <h4><i class="fas fa-book"></i> ${value.title}</h4>
+                <p>${value.content}</p>
+              </div>
+            `;
+          }
+        }
+        
+        return null;
+      }
+      
+      // Get current time
+      function getCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      
+      // Scroll to bottom of chat
+      function scrollToBottom() {
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }
+      
+      // Process user input and generate response
+      function processUserInput(input) {
+        const lowerInput = input.toLowerCase();
+        let response = "";
+        let isSpecial = false;
+        
+        // Greetings
+        if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+          response = "Hello {{ current_user.name if current_user else 'Student' }}! How can I assist you with your studies today?";
+        }
+        // Thanks
+        else if (lowerInput.includes('thank')) {
+          response = "You're welcome! Is there anything else you'd like help with?";
+        }
+        // Schedule queries
+        else if (lowerInput.includes('schedule') || lowerInput.includes('today') || lowerInput.includes('class')) {
+          response = "Here's your schedule for today:";
+          isSpecial = true;
+        }
+        // Assignment queries
+        else if (lowerInput.includes('assignment') || lowerInput.includes('homework') || lowerInput.includes('due')) {
+          response = "Here are your upcoming assignments:";
+          isSpecial = true;
+        }
+        // Progress queries
+        else if (lowerInput.includes('progress') || lowerInput.includes('grade') || lowerInput.includes('gpa')) {
+          response = "Here's your current academic progress:";
+          isSpecial = true;
+        }
+        // Study tips
+        else if (lowerInput.includes('study') || lowerInput.includes('exam') || lowerInput.includes('learn')) {
+          response = "Here are some effective study tips:";
+          isSpecial = true;
+        }
+        // Knowledge base queries
+        else if (lowerInput.includes('database') || lowerInput.includes('normalization')) {
+          response = "database normalization";
+          isSpecial = true;
+        }
+        else if (lowerInput.includes('calculus') || lowerInput.includes('math')) {
+          response = "calculus";
+          isSpecial = true;
+        }
+        else if (lowerInput.includes('programming') || lowerInput.includes('code')) {
+          response = "programming";
+          isSpecial = true;
+        }
+        // Default response
+        else {
+          response = "I'm not sure I understand. Could you rephrase your question or ask about:\n- Your schedule\n- Assignments\n- Course concepts\n- Study techniques";
+        }
+        
+        return { response, isSpecial };
+      }
+      
+      // Handle sending messages
+      function sendMessage() {
+        const messageText = chatbotInput.value.trim();
+        if (messageText === '') return;
+        
+        addMessage(messageText, true);
+        chatbotInput.value = '';
+        
+        // Simulate typing delay
+        setTimeout(() => {
+          const { response, isSpecial } = processUserInput(messageText);
+          addMessage(response, false, isSpecial);
+        }, 1000);
+      }
+      
+      // Event listeners
+      sendButton.addEventListener('click', sendMessage);
+      
+      chatbotInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+      
+      // Quick action buttons
+      actionCards.forEach(card => {
+        card.addEventListener('click', function() {
+          const prompt = this.getAttribute('data-prompt');
+          if (prompt) {
+            addMessage(prompt, true);
+            
+            // Simulate typing delay
+            setTimeout(() => {
+              const { response, isSpecial } = processUserInput(prompt);
+              addMessage(response, false, isSpecial);
+            }, 1000);
+          }
+        });
+      });
+      
+      // Initial scroll to bottom
+      scrollToBottom();
+    });
+  </script>
+</body>
+</html>

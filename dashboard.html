@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NMU{% endblock %}
+
+{% block content %}
+  <!-- محتوى الصفحة هنا -->
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - NMU StudyMate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: rgb(160, 50, 50);
+      --secondary-color: white;
+      --light-bg: #f9f9f9;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-color);
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      font-size: 1.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--secondary-color);
+      text-decoration: none;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .welcome-message h1 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-message p {
+      color: #666;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .card {
+      background: var(--secondary-color);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-top: 4px solid var(--primary-color);
+      transition: all 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .card-secondary {
+      font-size: 0.9rem;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Dashboard Sections */
+    .dashboard-section {
+      margin-top: 2rem;
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-header h2 {
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Upcoming Classes */
+    .class-item {
+      background: var(--secondary-color);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .class-item:hover {
+      transform: translateX(5px);
+    }
+
+    .class-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(160, 50, 50, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      flex-shrink: 0;
+    }
+
+    .class-info h4 {
+      margin-bottom: 0.3rem;
+    }
+
+    .class-info p {
+      color: #666;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Recent Assignments */
+    .assignment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .assignment-info h4 {
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .assignment-info p {
+      color: #666;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .assignment-due {
+      background: rgba(160, 50, 50, 0.1);
+      color: var(--primary-color);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Academic Progress */
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+
+    .progress-item {
+      margin-bottom: 1rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-title {
+      font-weight: 500;
+    }
+
+    .progress-percent {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #eee;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    /* Two-column layout */
+    .dashboard-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .dashboard-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <h2>NMU StudyMate</h2>
+    <div class="nav-links">
+      <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+      <a href="{{ url_for('courses') }}">Courses</a>
+      <a href="{{ url_for('schedule') }}">Schedule</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('login') }}">Logout</a>
+
+    </div>
+  </nav>
+
+  <div class="dashboard-content">
+    <div class="welcome-message">
+      <h1>Welcome Back, {{ current_user.name if current_user else 'Student' }}!</h1>
+      <p>Here's your academic overview - Today is Monday, October 16, 2023</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3><i class="fas fa-book"></i> My Courses</h3>
+        <p>Active courses this semester</p>
+        <div class="card-value">6</div>
+        <div class="card-secondary">
+          <i class="fas fa-check-circle"></i> 3 completed
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-tasks"></i> Assignments</h3>
+        <p>Pending submissions</p>
+        <div class="card-value">4</div>
+        <div class="card-secondary">
+          <i class="fas fa-exclamation-triangle"></i> 2 overdue
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-calendar"></i> Today's Classes</h3>
+        <p>Scheduled lectures</p>
+        <div class="card-value">3</div>
+        <div class="card-secondary">
+          <i class="fas fa-clock"></i> Next in 1h 25m
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-chart-line"></i> GPA</h3>
+        <p>Current semester</p>
+        <div class="card-value">3.2</div>
+        <div class="card-secondary">
+          <i class="fas fa-arrow-up"></i> +0.3 from last term
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-columns">
+      <div class="dashboard-section">
+        <div class="section-header">
+          <h2><i class="fas fa-clock"></i> Upcoming Classes</h2>
+          <a href="schedule.html" class="section-link">
+            View all <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
+        
+        <div class="class-item">
+          <div class="class-icon">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <div class="class-info">
+            <h4>Computer Programming</h4>
+            <p><i class="fas fa-clock"></i> 10:00 AM - 11:30 AM | <i class="fas fa-map-marker-alt"></i> Room 205</p>
+            <p><i class="fas fa-user-tie"></i> Dr. Ahmed Mohamed</p>
+          </div>
+        </div>
+
+        <div class="class-item">
+          <div class="class-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div class="class-info">
+            <h4>Advanced Mathematics</h4>
+            <p><i class="fas fa-clock"></i> 02:00 PM - 03:30 PM | <i class="fas fa-map-marker-alt"></i> Room 312</p>
+            <p><i class="fas fa-user-tie"></i> Dr. Mohamed Samy</p>
+          </div>
+        </div>
+
+        <div class="class-item">
+          <div class="class-icon">
+            <i class="fas fa-database"></i>
+          </div>
+          <div class="class-info">
+            <h4>Database Systems</h4>
+            <p><i class="fas fa-clock"></i> 04:00 PM - 05:30 PM | <i class="fas fa-map-marker-alt"></i> Lab A1</p>
+            <p><i class="fas fa-user-tie"></i> Dr. Sara Ali</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <div class="section-header">
+          <h2><i class="fas fa-tasks"></i> Recent Assignments</h2>
+          <a href="courses.html" class="section-link">
+            View all <i class="fas fa-chevron-right"></i>
+          </a>
+        </div>
+        
+        <div class="assignment-item">
+          <div class="assignment-info">
+            <h4><i class="fas fa-file-code"></i> Programming Project</h4>
+            <p><i class="fas fa-book"></i> Computer Programming | Due: Oct 18</p>
+          </div>
+          <div class="assignment-due">2 days left</div>
+        </div>
+
+        <div class="assignment-item">
+          <div class="assignment-info">
+            <h4><i class="fas fa-file-alt"></i> Math Problem Set</h4>
+            <p><i class="fas fa-calculator"></i> Advanced Mathematics | Due: Oct 20</p>
+          </div>
+          <div class="assignment-due">4 days left</div>
+        </div>
+
+        <div class="assignment-item">
+          <div class="assignment-info">
+            <h4><i class="fas fa-database"></i> SQL Lab Report</h4>
+            <p><i class="fas fa-server"></i> Database Systems | Due: Oct 22</p>
+          </div>
+          <div class="assignment-due">6 days left</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-section">
+      <div class="section-header">
+        <h2><i class="fas fa-chart-line"></i> Academic Progress</h2>
+        <a href="profile.html" class="section-link">
+          View details <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-title">Computer Programming</span>
+            <span class="progress-percent">85%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 85%"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-title">Advanced Mathematics</span>
+            <span class="progress-percent">72%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 72%"></div>
+          </div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-header">
+            <span class="progress-title">Database Systems</span>
+            <span class="progress-percent">65%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card, .class-item, .assignment-item, .progress-item');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.transform = 'translateY(0)';
+          card.style.opacity = '1';
+        }, index * 100);
+      });
+
+      // Animate progress bars
+      const progressBars = document.querySelectorAll('.progress-fill');
+      progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+          bar.style.width = width;
+        }, 300);
+      });
+    });
+  </script>
+</body>
+</html>

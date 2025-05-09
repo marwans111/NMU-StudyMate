@@ -1,0 +1,407 @@
+:root {
+    --nmu-primary: #1a5632;
+    --nmu-primary-light: rgba(26, 86, 50, 0.1);
+    --nmu-secondary: #d4af37;
+    --nmu-secondary-light: rgba(212, 175, 55, 0.3);
+    --nmu-dark: #0d2e1b;
+    --nmu-light: #f8f9fa;
+    --nmu-accent: #4B002D;
+    --text-primary: #333;
+    --text-secondary: #555;
+    --border-radius: 10px;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .profile-header {
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  
+  .profile-header h1 {
+    color: var(--nmu-primary);
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--nmu-secondary);
+  }
+  
+  .profile-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+  
+  /* Profile Card */
+  .profile-card {
+    background: var(--nmu-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  
+  .profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--nmu-secondary), var(--nmu-primary));
+  }
+  
+  .profile-info {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .profile-picture {
+    position: relative;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  .profile-picture img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--nmu-secondary);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: var(--transition);
+  }
+  
+  .profile-picture:hover img {
+    transform: scale(1.05);
+  }
+  
+  .btn-upload {
+    background: var(--nmu-primary);
+    color: var(--nmu-light);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .btn-upload:hover {
+    background: var(--nmu-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .profile-details {
+    flex: 1;
+  }
+  
+  .profile-details h2 {
+    color: var(--nmu-primary);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .user-role, .user-id {
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .user-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    background: var(--nmu-primary-light);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 600;
+    color: var(--nmu-primary);
+    transition: var(--transition);
+    min-width: 180px;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .stat-item i {
+    font-size: 1.2rem;
+    color: var(--nmu-secondary);
+  }
+  
+  .profile-actions {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  
+  .btn-action {
+    background: var(--nmu-primary);
+    color: var(--nmu-light);
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .btn-action:hover {
+    background: var(--nmu-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .btn-action.secondary {
+    background: transparent;
+    color: var(--nmu-primary);
+    border: 2px solid var(--nmu-primary);
+  }
+  
+  .btn-action.secondary:hover {
+    background: var(--nmu-primary-light);
+  }
+  
+  /* Profile Sections */
+  .profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .section-header h3 {
+    color: var(--nmu-primary);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: relative;
+  }
+  
+  .section-header h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--nmu-secondary);
+  }
+  
+  .personal-info-section, 
+  .academic-info-section,
+  .progress-section {
+    background: var(--nmu-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    transition: var(--transition);
+  }
+  
+  .personal-info-section:hover,
+  .academic-info-section:hover,
+  .progress-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .info-item {
+    margin-bottom: 1.2rem;
+  }
+  
+  .info-item label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .info-item p {
+    padding: 0.8rem 1rem;
+    background: var(--nmu-primary-light);
+    border-radius: var(--border-radius);
+    border-right: 3px solid var(--nmu-secondary);
+    font-size: 0.95rem;
+  }
+  
+  /* Progress Section */
+  .progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .progress-item {
+    width: 100%;
+  }
+  
+  .progress-item label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  
+  .progress-item label span {
+    color: var(--nmu-primary);
+    font-weight: 700;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--nmu-secondary), var(--nmu-primary));
+    border-radius: 5px;
+    transition: width 1s ease;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .profile-info {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .profile-details {
+      text-align: center;
+    }
+    
+    .profile-details h2::after {
+      right: 50%;
+      transform: translateX(50%);
+    }
+    
+    .user-stats {
+      justify-content: center;
+    }
+    
+    .profile-actions {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-container {
+      padding: 0 1.5rem;
+    }
+    
+    .profile-card {
+      padding: 1.5rem;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile-container {
+      padding: 0 1rem;
+    }
+    
+    .stat-item {
+      min-width: 100%;
+    }
+    
+    .profile-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  /* Animation Delays */
+  .profile-card { animation-delay: 0.1s; }
+  .personal-info-section { animation-delay: 0.2s; }
+  .academic-info-section { animation-delay: 0.3s; }
+  .progress-section { animation-delay: 0.4s; }

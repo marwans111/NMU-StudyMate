@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NMU StudyHub - Student Community</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: rgb(160, 50, 50);
+      --secondary-color: white;
+      --light-bg: #f9f9f9;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-color);
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      font-size: 1.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--secondary-color);
+      text-decoration: none;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .welcome-message h1 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .welcome-message p {
+      color: #666;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin: 2rem 0 1rem 0;
+    }
+
+    .tab {
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      border-bottom-color: var(--primary-color);
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .tab:hover:not(.active) {
+      background-color: rgba(160, 50, 50, 0.05);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .community-container {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Sidebar Styles */
+    .community-sidebar {
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      height: fit-content;
+    }
+
+    .sidebar-section {
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .online-users {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .user-item:hover {
+      background-color: rgba(160, 50, 50, 0.05);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-info h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .user-info p {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .user-status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #4CAF50;
+    }
+
+    .user-status.offline {
+      background-color: #ccc;
+    }
+
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .course-item {
+      padding: 0.8rem;
+      border-radius: 6px;
+      background-color: rgba(160, 50, 50, 0.03);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .course-item:hover {
+      background-color: rgba(160, 50, 50, 0.1);
+    }
+
+    .course-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+    }
+
+    /* Main Content Styles */
+    .community-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .post-card {
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .post-card:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .post-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .post-user-info h4 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .post-user-info p {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .post-content {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .post-action:hover {
+      color: var(--primary-color);
+    }
+
+    .post-comments {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .comment-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(160, 50, 50, 0.1);
+    }
+
+    .send-comment-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .send-comment-btn:hover {
+      background: rgb(140, 40, 40);
+      transform: scale(1.05);
+    }
+
+    .comment-item {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: rgba(160, 50, 50, 0.03);
+      border-radius: 8px;
+    }
+
+    .comment-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .comment-content {
+      flex: 1;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .comment-header h5 {
+      font-size: 0.9rem;
+    }
+
+    .comment-header span {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    /* Chat Styles */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .chat-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .chat-info h4 {
+      font-size: 1.1rem;
+    }
+
+    .chat-info p {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      display: flex;
+      max-width: 70%;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.received {
+      align-self: flex-start;
+    }
+
+    .message.sent {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-left: 0.8rem;
+      margin-right: 0.8rem;
+      flex-shrink: 0;
+      background-color: rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .message-content {
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .message.received .message-content {
+      background: var(--secondary-color);
+      border-top-right-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid rgba(160, 50, 50, 0.1);
+    }
+
+    .message.sent .message-content {
+      background: var(--primary-color);
+      color: white;
+      border-top-left-radius: 4px;
+    }
+
+    .message-time {
+      display: block;
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 0.5rem;
+      text-align: left;
+    }
+
+    .message.sent .message-time {
+      text-align: right;
+    }
+
+    .chat-input-container {
+      padding: 1rem;
+      border-top: 1px solid rgba(160, 50, 50, 0.1);
+      display: flex;
+      align-items: center;
+      background: var(--secondary-color);
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(160, 50, 50, 0.1);
+    }
+
+    .send-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .send-btn:hover {
+      background: rgb(140, 40, 40);
+      transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .community-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .tabs {
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+      
+      .message {
+        max-width: 85%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <h2>NMU StudyHub - Student Community</h2>
+    <div class="nav-links">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('courses') }}">Courses</a>
+      <a href="{{ url_for('community') }}" class="active">Community</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-content">
+    <div class="welcome-message">
+      <h1><i class="fas fa-users"></i> NMU Student Community</h1>
+      <p>Connect with classmates and professors for academic collaboration</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="community">Student Community</div>
+      <div class="tab" data-tab="professor-chat">Chat with Professors</div>
+      <div class="tab" data-tab="student-chat">Chat with Students</div>
+    </div>
+
+    <!-- Community Tab -->
+    <div class="tab-content active" id="community">
+      <div class="community-container">
+        <!-- Sidebar -->
+        <div class="community-sidebar">
+          <div class="sidebar-section">
+            <h3><i class="fas fa-user-friends"></i> Online Members</h3>
+            <div class="online-users">
+              <div class="user-item" data-user="ahmed123" data-type="student">
+                <div class="user-avatar">AM</div>
+                <div class="user-info">
+                  <h4>Ahmed Mohamed</h4>
+                  <p>Computer Science</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="sara456" data-type="student">
+                <div class="user-avatar">SA</div>
+                <div class="user-info">
+                  <h4>Sara Ali</h4>
+                  <p>Engineering</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="prof_mohamed" data-type="professor">
+                <div class="user-avatar">PM</div>
+                <div class="user-info">
+                  <h4>Prof. Mohamed</h4>
+                  <p>Mathematics</p>
+                </div>
+                <div class="user-status offline"></div>
+              </div>
+              <div class="user-item" data-user="mira789" data-type="student">
+                <div class="user-avatar">MA</div>
+                <div class="user-info">
+                  <h4>Mira Ahmed</h4>
+                  <p>Information Systems</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3><i class="fas fa-book"></i> My Courses</h3>
+            <div class="courses-list">
+              <div class="course-item">
+                <div class="course-icon"><i class="fas fa-laptop-code"></i></div>
+                <span>Computer Programming</span>
+              </div>
+              <div class="course-item">
+                <div class="course-icon"><i class="fas fa-calculator"></i></div>
+                <span>Advanced Mathematics</span>
+              </div>
+              <div class="course-item">
+                <div class="course-icon"><i class="fas fa-database"></i></div>
+                <span>Database Systems</span>
+              </div>
+              <div class="course-item">
+                <div class="course-icon"><i class="fas fa-desktop"></i></div>
+                <span>Operating Systems</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="community-main">
+          <!-- Create Post -->
+          <div class="post-card">
+            <div class="post-header">
+              <div class="post-user-avatar">YO</div>
+              <div class="post-user-info">
+                <h4>You</h4>
+                <p>Create a new post</p>
+              </div>
+            </div>
+            <div class="post-content">
+              <textarea class="comment-input" placeholder="Write your post here..." rows="3"></textarea>
+            </div>
+            <div class="post-actions">
+              <button class="send-comment-btn" style="margin-left: auto;"><i class="fas fa-paper-plane"></i> Post</button>
+            </div>
+          </div>
+
+          <!-- Sample Post 1 -->
+          <div class="post-card">
+            <div class="post-header">
+              <div class="post-user-avatar">AM</div>
+              <div class="post-user-info">
+                <h4>Ahmed Mohamed</h4>
+                <p>Computer Science | 2 hours ago</p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Can someone help me with problem #5 in the math assignment? I've tried solving it multiple times but can't get the correct answer.</p>
+            </div>
+            <div class="post-actions">
+              <div class="post-action">
+                <i class="far fa-thumbs-up"></i>
+                <span>12</span>
+              </div>
+              <div class="post-action">
+                <i class="far fa-comment"></i>
+                <span>3</span>
+              </div>
+              <div class="post-action">
+                <i class="fas fa-share"></i>
+                <span>Share</span>
+              </div>
+            </div>
+
+            <div class="post-comments">
+              <div class="comment-item">
+                <div class="comment-avatar">SA</div>
+                <div class="comment-content">
+                  <div class="comment-header">
+                    <h5>Sara Ali</h5>
+                    <span>1 hour ago</span>
+                  </div>
+                  <p>Hey Ahmed, you can use the Pythagorean theorem for this problem. Would you like me to explain the steps in detail?</p>
+                </div>
+              </div>
+
+              <div class="comment-form">
+                <input type="text" class="comment-input" placeholder="Write a comment...">
+                <button class="send-comment-btn"><i class="fas fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sample Post 2 -->
+          <div class="post-card">
+            <div class="post-header">
+              <div class="post-user-avatar">PM</div>
+              <div class="post-user-info">
+                <h4>Prof. Mohamed</h4>
+                <p>Mathematics | 5 hours ago</p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>Notice to all Advanced Math students: The next lecture has been rescheduled from Sunday to Tuesday at the same time. The missed lecture will be made up at the end of the semester.</p>
+            </div>
+            <div class="post-actions">
+              <div class="post-action">
+                <i class="far fa-thumbs-up"></i>
+                <span>24</span>
+              </div>
+              <div class="post-action">
+                <i class="far fa-comment"></i>
+                <span>7</span>
+              </div>
+              <div class="post-action">
+                <i class="fas fa-share"></i>
+                <span>Share</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professor Chat Tab -->
+    <div class="tab-content" id="professor-chat">
+      <div class="community-container">
+        <!-- Sidebar -->
+        <div class="community-sidebar">
+          <div class="sidebar-section">
+            <h3><i class="fas fa-user-tie"></i> Professors</h3>
+            <div class="online-users">
+              <div class="user-item" data-user="prof_mohamed">
+                <div class="user-avatar">PM</div>
+                <div class="user-info">
+                  <h4>Prof. Mohamed</h4>
+                  <p>Mathematics</p>
+                </div>
+                <div class="user-status offline"></div>
+              </div>
+              <div class="user-item" data-user="prof_ahmed">
+                <div class="user-avatar">PA</div>
+                <div class="user-info">
+                  <h4>Prof. Ahmed</h4>
+                  <p>Computer Science</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="prof_sara">
+                <div class="user-avatar">PS</div>
+                <div class="user-info">
+                  <h4>Prof. Sara</h4>
+                  <p>Database Systems</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3><i class="fas fa-comments"></i> Recent Chats</h3>
+            <div class="online-users">
+              <div class="user-item" data-user="prof_ahmed">
+                <div class="user-avatar">PA</div>
+                <div class="user-info">
+                  <h4>Prof. Ahmed</h4>
+                  <p>Last message: Yes, you can reschedule the exam...</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="prof_sara">
+                <div class="user-avatar">PS</div>
+                <div class="user-info">
+                  <h4>Prof. Sara</h4>
+                  <p>Last message: The new project should include...</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Main -->
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-avatar">PA</div>
+            <div class="chat-info">
+              <h4>Prof. Ahmed</h4>
+              <p>Computer Science Professor</p>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="professor-chat-messages">
+            <div class="message received">
+              <div class="message-avatar">PA</div>
+              <div class="message-content">
+                <p>Hello Ahmed, how can I help you today?</p>
+                <span class="message-time">10:30 AM</span>
+              </div>
+            </div>
+
+            <div class="message sent">
+              <div class="message-content">
+                <p>Good morning Professor, I have a question about the programming project deadline. Can we get an extension?</p>
+                <span class="message-time">10:32 AM</span>
+              </div>
+              <div class="message-avatar">YO</div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">PA</div>
+              <div class="message-content">
+                <p>Yes, I can give you 3 extra days due to the current circumstances. Do you need any help with the project?</p>
+                <span class="message-time">10:35 AM</span>
+              </div>
+            </div>
+
+            <div class="message sent">
+              <div class="message-content">
+                <p>Thank you Professor. Yes, I'm having trouble with the database connection part of the code.</p>
+                <span class="message-time">10:36 AM</span>
+              </div>
+              <div class="message-avatar">YO</div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">PA</div>
+              <div class="message-content">
+                <p>You can send me your code and I'll review it. I'm also available during office hours tomorrow if you'd like to discuss it in person.</p>
+                <span class="message-time">10:38 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-container">
+            <input type="text" class="chat-input" placeholder="Type your message...">
+            <button class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Chat Tab -->
+    <div class="tab-content" id="student-chat">
+      <div class="community-container">
+        <!-- Sidebar -->
+        <div class="community-sidebar">
+          <div class="sidebar-section">
+            <h3><i class="fas fa-user-graduate"></i> Students</h3>
+            <div class="online-users">
+              <div class="user-item" data-user="ahmed123">
+                <div class="user-avatar">AM</div>
+                <div class="user-info">
+                  <h4>Ahmed Mohamed</h4>
+                  <p>Computer Science</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="sara456">
+                <div class="user-avatar">SA</div>
+                <div class="user-info">
+                  <h4>Sara Ali</h4>
+                  <p>Engineering</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="mira789">
+                <div class="user-avatar">MA</div>
+                <div class="user-info">
+                  <h4>Mira Ahmed</h4>
+                  <p>Information Systems</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="ali012">
+                <div class="user-avatar">AH</div>
+                <div class="user-info">
+                  <h4>Ali Hassan</h4>
+                  <p>Programming Team</p>
+                </div>
+                <div class="user-status offline"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3><i class="fas fa-comments"></i> Recent Chats</h3>
+            <div class="online-users">
+              <div class="user-item" data-user="sara456">
+                <div class="user-avatar">SA</div>
+                <div class="user-info">
+                  <h4>Sara Ali</h4>
+                  <p>Last message: I'll send you the notes soon</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+              <div class="user-item" data-user="mira789">
+                <div class="user-avatar">MA</div>
+                <div class="user-info">
+                  <h4>Mira Ahmed</h4>
+                  <p>Last message: Study group at 3pm?</p>
+                </div>
+                <div class="user-status"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Main -->
+        <div class="chat-container">
+          <div class="chat-header">
+            <div class="chat-avatar">SA</div>
+            <div class="chat-info">
+              <h4>Sara Ali</h4>
+              <p>Engineering Student</p>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="student-chat-messages">
+            <div class="message received">
+              <div class="message-avatar">SA</div>
+              <div class="message-content">
+                <p>Hey, do you have the notes from yesterday's Database class?</p>
+                <span class="message-time">10:30 AM</span>
+              </div>
+            </div>
+
+            <div class="message sent">
+              <div class="message-content">
+                <p>Yes, I do! I'll send them to you in a minute.</p>
+                <span class="message-time">10:32 AM</span>
+              </div>
+              <div class="message-avatar">YO</div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">SA</div>
+              <div class="message-content">
+                <p>Thanks! Also, are you working on the SQL assignment?</p>
+                <span class="message-time">10:33 AM</span>
+              </div>
+            </div>
+
+            <div class="message sent">
+              <div class="message-content">
+                <p>I just started it. Maybe we can work on it together later?</p>
+                <span class="message-time">10:35 AM</span>
+              </div>
+              <div class="message-avatar">YO</div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">SA</div>
+              <div class="message-content">
+                <p>That would be great! I'm stuck on the third question about joins.</p>
+                <span class="message-time">10:36 AM</span>
+              </div>
+            </div>
+
+            <div class="message sent">
+              <div class="message-content">
+                <p>I can help with that. Let's meet at the library at 3 PM?</p>
+                <span class="message-time">10:37 AM</span>
+              </div>
+              <div class="message-avatar">YO</div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">SA</div>
+              <div class="message-content">
+                <p>Perfect! See you then. Here are the notes you asked for:</p>
+                <span class="message-time">10:38 AM</span>
+              </div>
+            </div>
+
+            <div class="message received">
+              <div class="message-avatar">SA</div>
+              <div class="message-content">
+                <div style="padding: 0.8rem; background: rgba(160, 50, 50, 0.05); border-radius: 8px; margin-top: 0.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+                    <i class="fas fa-file-pdf" style="color: var(--primary-color); font-size: 1.2rem;"></i>
+                    <div>
+                      <p style="font-weight: 500;">Database_Lecture_5.pdf</p>
+                      <p style="font-size: 0.8rem; color: #666;">2.4 MB</p>
+                    </div>
+                  </div>
+                  <button style="background: var(--primary-color); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
+                    <i class="fas fa-download"></i> Download
+                  </button>
+                </div>
+                <span class="message-time">10:38 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-container">
+            <input type="text" class="chat-input" placeholder="Type your message...">
+            <button class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+
+          // Add active class to clicked tab and corresponding content
+          this.classList.add('active');
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+
+      // Chat functionality for professor chat
+      const professorChatInput = document.querySelector('#professor-chat .chat-input');
+      const professorSendBtn = document.querySelector('#professor-chat .send-btn');
+      const professorChatMessages = document.getElementById('professor-chat-messages');
+
+      // Chat functionality for student chat
+      const studentChatInput = document.querySelector('#student-chat .chat-input');
+      const studentSendBtn = document.querySelector('#student-chat .send-btn');
+      const studentChatMessages = document.getElementById('student-chat-messages');
+
+      // Function to send message in professor chat
+      function sendProfessorMessage() {
+        const messageText = professorChatInput.value.trim();
+        if (messageText === '') return;
+
+        addMessage(professorChatMessages, messageText, true);
+        professorChatInput.value = '';
+        scrollToBottom(professorChatMessages);
+
+        // Simulate professor reply
+        setTimeout(() => {
+          const replies = [
+            "I'll check and get back to you.",
+            "Thanks for letting me know!",
+            "Can we discuss this in person?",
+            "Have you checked the course materials?",
+            "Let me review this and I'll respond shortly."
+          ];
+          const randomReply = replies[Math.floor(Math.random() * replies.length)];
+          addMessage(professorChatMessages, randomReply, false, 'PA');
+        }, 1000 + Math.random() * 1000);
+      }
+
+      // Function to send message in student chat
+      function sendStudentMessage() {
+        const messageText = studentChatInput.value.trim();
+        if (messageText === '') return;
+
+        addMessage(studentChatMessages, messageText, true);
+        studentChatInput.value = '';
+        scrollToBottom(studentChatMessages);
+
+        // Simulate student reply
+        setTimeout(() => {
+          const replies = [
+            "Sounds good!",
+            "I'll be there.",
+            "Can we meet a bit later?",
+            "Do you have the assignment requirements?",
+            "Let me check my schedule and confirm."
+          ];
+          const randomReply = replies[Math.floor(Math.random() * replies.length)];
+          addMessage(studentChatMessages, randomReply, false, 'SA');
+        }, 1000 + Math.random() * 1000);
+      }
+
+      // Generic function to add message to any chat
+      function addMessage(container, text, isUser = false, avatar = 'YO') {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'sent' : 'received'}`;
+        
+        if (isUser) {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <p>${text}</p>
+              <span class="message-time">${getCurrentTime()}</span>
+            </div>
+            <div class="message-avatar">${avatar}</div>
+          `;
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-content">
+              <p>${text}</p>
+              <span class="message-time">${getCurrentTime()}</span>
+            </div>
+          `;
+        }
+        
+        container.appendChild(messageDiv);
+        scrollToBottom(container);
+      }
+
+      // Function to get current time in 12-hour format
+      function getCurrentTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        return `${hours}:${minutes} ${ampm}`;
+      }
+
+      // Function to scroll to the bottom of any chat
+      function scrollToBottom(container) {
+        container.scrollTop = container.scrollHeight;
+      }
+
+      // Event listeners for professor chat
+      professorSendBtn.addEventListener('click', sendProfessorMessage);
+      professorChatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendProfessorMessage();
+        }
+      });
+
+      // Event listeners for student chat
+      studentSendBtn.addEventListener('click', sendStudentMessage);
+      studentChatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendStudentMessage();
+        }
+      });
+
+      // User switching functionality
+      const userItems = document.querySelectorAll('.user-item');
+      userItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const userId = this.getAttribute('data-user');
+          const userType = this.getAttribute('data-type');
+          const avatar = this.querySelector('.user-avatar').textContent;
+          const name = this.querySelector('.user-info h4').textContent;
+          const role = this.querySelector('.user-info p').textContent;
+
+          // Determine which chat to update based on user type
+          if (userType === 'professor') {
+            document.querySelector('#professor-chat .chat-avatar').textContent = avatar;
+            document.querySelector('#professor-chat .chat-info h4').textContent = name;
+            document.querySelector('#professor-chat .chat-info p').textContent = role + " Professor";
+            
+            // Switch to professor chat tab
+            document.querySelector('.tab[data-tab="professor-chat"]').click();
+          } else {
+            document.querySelector('#student-chat .chat-avatar').textContent = avatar;
+            document.querySelector('#student-chat .chat-info h4').textContent = name;
+            document.querySelector('#student-chat .chat-info p').textContent = role + " Student";
+            
+            // Switch to student chat tab
+            document.querySelector('.tab[data-tab="student-chat"]').click();
+          }
+        });
+      });
+
+      // Initialize scroll to bottom for both chats
+      scrollToBottom(professorChatMessages);
+      scrollToBottom(studentChatMessages);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - NMU StudyMate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: rgb(160, 50, 50);
+      --secondary-color: white;
+      --light-bg: #f9f9f9;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('https://beta-technical.com/beta2018/wp-content/uploads/2021/10/Engineering.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--secondary-color);
+      margin: 2rem;
+    }
+
+    .login-hero {
+      flex: 1;
+      background: linear-gradient(135deg, rgba(160, 50, 50, 0.9), rgba(140, 40, 40, 0.9));
+      color: var(--secondary-color);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .login-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('src="https://beta-technical.com/beta2018/wp-content/uploads/2021/10/Engineering.jpg');
+      opacity: 0.05;
+    }
+
+    .login-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .university-logo {
+      width: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .login-hero h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .login-hero p {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .features-list li {
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .features-list i {
+      margin-right: 12px;
+      color: var(--secondary-color);
+      font-size: 1.1rem;
+      background: rgba(255, 255, 255, 0.2);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .login-box {
+      flex: 1;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .login-header h1 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .login-form {
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(160, 50, 50, 0.1);
+      outline: none;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    .input-with-icon {
+      padding-left: 2.8rem;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #999;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-login:hover {
+      background: rgb(140, 40, 40);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(160, 50, 50, 0.2);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .login-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .social-login {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .social-login p {
+      margin-bottom: 1rem;
+      position: relative;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .social-login p::before,
+    .social-login p::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: #eee;
+    }
+
+    .social-login p::before {
+      left: 0;
+    }
+
+    .social-login p::after {
+      right: 0;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .icon-google {
+      background: #DB4437;
+    }
+
+    .icon-microsoft {
+      background: #00A1F1;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+    }
+
+    .remember-me input {
+      margin-right: 0.5rem;
+      accent-color: var(--primary-color);
+    }
+
+    .forgot-password {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .security-tips {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(160, 50, 50, 0.05);
+      border-radius: 6px;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .security-tips h4 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .security-tips p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+        margin: 1rem;
+      }
+      
+      .login-hero {
+        display: none;
+      }
+      
+      .login-box {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-hero">
+      <div class="login-hero-content">
+        <img src="https://www.nmu.edu.eg/frontend/assets/img/logo2.png" alt="NMU Logo" class="university-logo">
+        <h2>Welcome to NMU StudyMate</h2>
+        <p>Your comprehensive academic portal for managing courses, schedules, assignments, and more. Access all your learning resources in one place.</p>
+        
+        <ul class="features-list">
+          <li><i class="fas fa-book-open"></i> Access all course materials and lectures</li>
+          <li><i class="fas fa-calendar-alt"></i> Track your class schedule and deadlines</li>
+          <li><i class="fas fa-tasks"></i> Submit assignments and view grades</li>
+          <li><i class="fas fa-comments"></i> Communicate with professors and classmates</li>
+          <li><i class="fas fa-chart-line"></i> Monitor your academic progress</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="login-box">
+      <div class="login-header">
+        <h1>Sign In</h1>
+        <p>Use your NMU credentials to access your account</p>
+      </div>
+      
+      <form class="login-form" action="dashboard.html">
+        <div class="form-group">
+          <label for="email">University Email</label>
+          <div style="position: relative;">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" class="form-control input-with-icon" placeholder="student@nmu.edu.eg" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div style="position: relative;">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-control input-with-icon" placeholder="Enter your password" required>
+            <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+          </div>
+        </div>
+        
+        <div class="remember-forgot">
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn-login">Sign In</button>
+      </form>
+      
+      <div class="security-tips">
+        <h4><i class="fas fa-shield-alt"></i> Security Tips</h4>
+        <p>Always log out after your session, especially on shared computers. Never share your password with anyone.</p>
+      </div>
+      
+      <div class="social-login">
+        <p>Or sign in with</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon icon-google"><i class="fab fa-google"></i></a>
+          <a href="#" class="social-icon icon-microsoft"><i class="fab fa-microsoft"></i></a>
+        </div>
+      </div>
+      
+      <div class="login-footer">
+        Don't have an account? <a href="register.html">Contact administration</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    
+    togglePassword.addEventListener('click', function() {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    // Simple animation on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginBox = document.querySelector('.login-box');
+      loginBox.style.opacity = '0';
+      loginBox.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        loginBox.style.opacity = '1';
+        loginBox.style.transform = 'translateY(0)';
+        loginBox.style.transition = 'all 0.4s ease-out';
+      }, 100);
+      
+      // Animate form elements
+      const formElements = document.querySelectorAll('.form-group, .remember-forgot, .btn-login, .security-tips, .social-login, .login-footer');
+      formElements.forEach((el, index) => {
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 200 + (index * 100));
+      });
+    });
+  </script>
+</body>
+</html>
